@@ -56,11 +56,11 @@ class MovieInfo:
         self.titleoriginal = response.film.name_original
         self.rating = response.film.rating_kinopoisk
         self.votesum = response.film.rating_kinopoisk_vote_count
-        self.info = str(response.film.end_year) + ", " + \
+        self.info = str(response.film.year) + ", " + \
             response.film.countries[0].country + ", " + \
             response.film.genres[0].genre
         self.description = response.film.description
-        self.releaseyear = str(response.film.end_year)
+        self.releaseyear = str(response.film.year)
         self.country = response.film.countries[0].country
         for country in response.film.countries[1 : ]:
             self.country += (", " + country.country)
@@ -154,45 +154,6 @@ def saveImage(imageUrl, name):
 def getNameFromUrl(imageUrl, preview=False):
     name = imageUrl[imageUrl.rindex("/") + 1 : ]
     return name
-
-
-def getMovieInfo(kinopoiskID, ID):
-    movieInfo = MovieInfo()
-    request = FilmRequest(kinopoiskID)
-    try:
-        response = api_client.films.send_film_request(request)
-    except Exception as e:
-        # print("[ ERR ]: " + str(e))
-        return MovieInfo()
-    movieInfo.poster = ID + ".webp"
-    saveImage(response.film.poster_url, movieInfo.poster)
-    movieInfo.posterpreview = ID + "_preview.webp"
-    saveImage(response.film.poster_url_preview, movieInfo.posterpreview)
-    movieInfo.title = response.film.name_ru
-    movieInfo.titleoriginal = response.film.name_original
-    movieInfo.rating = response.film.rating_kinopoisk
-    movieInfo.votesum = response.film.rating_kinopoisk_vote_count
-    movieInfo.info = str(response.film.end_year) + ", " + \
-        response.film.countries[0].country + ", " + \
-        response.film.genres[0].genre
-    movieInfo.description = response.film.description
-
-    # TODO: trailer
-
-    movieInfo.releaseyear = str(response.film.end_year)
-    movieInfo.country = response.film.countries[0].country
-    for country in response.film.countries[1 : ]:
-        movieInfo.country += (", " + country.country)
-    movieInfo.motto = response.film.slogan
-    
-    # TODO: director
-
-    # TODO: budget, gross
-
-    movieInfo.duration = response.film.film_length + " мин."
-
-    movieInfo.isEmpty = False
-    return movieInfo
 
 def cleanImages():
     files = glob.glob('./img/*')
