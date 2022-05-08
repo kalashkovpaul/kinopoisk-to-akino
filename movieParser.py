@@ -204,7 +204,7 @@ def getMovies():
         movieInfo.getInfo(kinopoiskId, id, actorsIDs)
         if not movieInfo.isEmpty:
             print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
-            if kinopoiskId == 302:
+            if kinopoiskId == 309:
                 movieInfo.writeToFile(moviesFile, True)
             else:
                 movieInfo.writeToFile(moviesFile)
