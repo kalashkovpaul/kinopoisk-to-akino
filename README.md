@@ -12,9 +12,9 @@
 
 ### Установка
 
-```
+'''
 $ pip install kinopoisk-api-unofficial-client
-```
+'''
 
 ### Получение токена KinopoiskAPI
 
@@ -33,97 +33,97 @@ $ pip install kinopoisk-api-unofficial-client
 
 Возвращает базовые данные о фильме. Поле last_sync показывает дату последнего обновления данных.
 
-* `Эндпоинт`: /api/v2.2/films/{id}
-* `Метод`: send_film_request(request: FilmRequest) -> FilmResponse
+* 'Эндпоинт': /api/v2.2/films/{id}
+* 'Метод': send_film_request(request: FilmRequest) -> FilmResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.film_request import FilmRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = FilmRequest(507)
 response = api_client.films.send_film_request(request)
-```
+'''
 
 ### Получить данные о сезонах для сериала по kinopoisk film id
 
 Возвращает данные о сезонах для сериала.
 
-* `Эндпоинт`: /api/v2.2/films/{id}/seasons
-* `Метод`: send_seasons_request(request: SeasonsRequest) -> SeasonsResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/seasons
+* 'Метод': send_seasons_request(request: SeasonsRequest) -> SeasonsResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.seasons_request import SeasonsRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = SeasonsRequest(685246)
 response = api_client.films.send_seasons_request(request)
-```
+'''
 
 ### Получить данные о фактах и ошибках в фильме по kinopoisk film id
 
 Возвращает список фактов и ошибок в фильме.
 
-* `Эндпоинт`: /api/v2.2/films/{id}/facts
-* `Метод`: send_facts_request(request: FactsRequest) -> FactsResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/facts
+* 'Метод': send_facts_request(request: FactsRequest) -> FactsResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.facts_request import FactsRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = FactsRequest(685246)
 response = api_client.films.send_facts_request(request)
-```
+'''
 
 ### Получить данные о прокате фильма по kinopoisk film id
 
 Возвращает данные о прокате в разных странах.
 
-* `Эндпоинт`: /api/v2.2/films/{id}/distributions
-* `Метод`: send_distributions_request(request: DistributionsRequest) -> DistributionsResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/distributions
+* 'Метод': send_distributions_request(request: DistributionsRequest) -> DistributionsResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.distributions_request import DistributionsRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = DistributionsRequest(507)
 response = api_client.films.send_distributions_request(request)
-```
+'''
 
 ### Получить данные о бюджете и сборах фильма по kinopoisk film id
 
 Возвращает данные о бюджете и сборах.
 
-* `Эндпоинт`: /api/v2.2/films/{id}/box_office
-* `Метод`: send_box_office_request(request: BoxOfficeRequest) -> BoxOfficeResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/box_office
+* 'Метод': send_box_office_request(request: BoxOfficeRequest) -> BoxOfficeResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.box_office_request import BoxOfficeRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = BoxOfficeRequest(507)
 response = api_client.films.send_box_office_request(request)
-```
+'''
 
 ### Получить кадры из фильма по kinopoisk film id
 
 Возвращает кадры из фильма.
 
-* `Эндпоинт`: /api/v2.1/films/{id}/frames
-* `Метод`: send_film_frame_request(request: FilmFrameRequest) -> FilmFrameResponse
+* 'Эндпоинт': /api/v2.1/films/{id}/frames
+* 'Метод': send_film_frame_request(request: FilmFrameRequest) -> FilmFrameResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.film_frame_request import FilmFrameRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = FilmFrameRequest(507)
 response = api_client.films.send_film_frame_request(request)
-```
+'''
 
 ### Получить изображения(кадры, постеры, фан-арты, обои и т.д.) связанные с фильмом по kinopoisk film id
 
@@ -142,90 +142,90 @@ ImageType
 - COVER - обложки
 - SCREENSHOT - скриншоты
 
-* `Эндпоинт`: /api/v2.2/films/{id}/images
-* `Метод`: send_image_request(self, request: ImageRequest) -> ImageResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/images
+* 'Метод': send_image_request(self, request: ImageRequest) -> ImageResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.image_request import ImageRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = ImageRequest(507)
 response = api_client.films.send_image_request(request)
-```
+'''
 
 ### Получить трейлеры, тизеры, видео для фильма по kinopoisk film id
 
 Возвращает трейлеры, тизеры, видео для фильма по kinopoisk film id.
 
-* `Эндпоинт`: /api/v2.2/films/{id}/videos
-* `Метод`: send_film_video_request(request: FilmVideoRequest) -> FilmVideoResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/videos
+* 'Метод': send_film_video_request(request: FilmVideoRequest) -> FilmVideoResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.film_video_request import FilmVideoRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = FilmVideoRequest(507)
 response = api_client.films.send_film_video_request(request)
-```
+'''
 
 ### Получить сиквелы и приквелы для фильма по kinopoisk film id
 
 Возвращает информацию о сиквелах и приквелах для фильма по kinopoisk film id.
 
-* `Эндпоинт`: /api/v2.1/films/{id}/sequels_and_prequels
-* `Метод`: send_film_sequels_and_prequels_request(request: FilmSequelsAndPrequelsRequest) ->
+* 'Эндпоинт': /api/v2.1/films/{id}/sequels_and_prequels
+* 'Метод': send_film_sequels_and_prequels_request(request: FilmSequelsAndPrequelsRequest) ->
   FilmSequelsAndPrequelsResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.film_sequels_and_prequels_request import FilmSequelsAndPrequelsRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = FilmSequelsAndPrequelsRequest(507)
 response = api_client.films.send_film_sequels_and_prequels_request(request)
-```
+'''
 
 ### Получить список фильмов по ключевым словам
 
-* `Эндпоинт`: /api/v2.1/films/search-by-keyword
-* `Метод`: send_search_by_keyword_request(request: SearchByKeywordRequest) -> SearchByKeywordResponse
+* 'Эндпоинт': /api/v2.1/films/search-by-keyword
+* 'Метод': send_search_by_keyword_request(request: SearchByKeywordRequest) -> SearchByKeywordResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.search_by_keyword_request import SearchByKeywordRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = SearchByKeywordRequest("Рик и Морти")
 response = api_client.films.send_search_by_keyword_request(request)
-```
+'''
 
 ### Получить id стран и жанров для использования в FilmSearchByFiltersRequest
 
 Возвращает список id стран и жанров, которые могут быть использованы в поиске по фильтру.
 
-* `Эндпоинт`: /api/v2.1/films/filters
-* `Метод`: send_filters_request(request: FiltersRequest) -> FiltersResponse
+* 'Эндпоинт': /api/v2.1/films/filters
+* 'Метод': send_filters_request(request: FiltersRequest) -> FiltersResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.filters_request import FiltersRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = FiltersRequest()
 response = api_client.films.send_filters_request(request)
-```
+'''
 
 ### Получить список фильмов по различным фильтрам
 
-Возвращает список фильмов с пагинацией. Каждая страница содержит не более чем 20 фильмов. Используй `FiltersRequest`
+Возвращает список фильмов с пагинацией. Каждая страница содержит не более чем 20 фильмов. Используй 'FiltersRequest'
 чтобы получить id стран и жанров.
 
-* `Эндпоинт`: /api/v2.1/films/search-by-filters
-* `Метод`: send_film_search_by_filters_request(request: FilmSearchByFiltersRequest) -> FilmSearchByFiltersResponse
+* 'Эндпоинт': /api/v2.1/films/search-by-filters
+* 'Метод': send_film_search_by_filters_request(request: FilmSearchByFiltersRequest) -> FilmSearchByFiltersResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.model.filter_country import FilterCountry
 from kinopoisk_unofficial.model.filter_order import FilterOrder
@@ -240,17 +240,17 @@ request.order = FilterOrder.RATING
 request.add_country(FilterCountry(1, 'США'))
 
 response = api_client.films.send_film_search_by_filters_request(request)
-```
+'''
 
 ### Получить список фильмов из различных топов или коллекций
 
 Возвращает список фильмов с пагинацией. Каждая страница содержит не более чем 20 фильмов.
 Например: https://www.kinopoisk.ru/top/lists/58/.
 
-* `Эндпоинт`: /api/v2.2/films/top
-* `Метод`: send_film_top_request(request: FilmTopRequest) -> FilmTopResponse
+* 'Эндпоинт': /api/v2.2/films/top
+* 'Метод': send_film_top_request(request: FilmTopRequest) -> FilmTopResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.film_top_request import FilmTopRequest
 from kinopoisk_unofficial.model.dictonary.top_type import TopType
@@ -258,32 +258,32 @@ from kinopoisk_unofficial.model.dictonary.top_type import TopType
 api_client = KinopoiskApiClient("<your_token>")
 request = FilmTopRequest(TopType.TOP_250_BEST_FILMS)
 response = api_client.films.send_film_top_request(request)
-```
+'''
 
 ### Получить список похожих фильмов по kinopoisk film id
 
 Возвращает список похожих фильмов по kinopoisk film id
 
-* `Эндпоинт`: /api/v2.2/films/{id}/similars
-* `Метод`: send_related_film_request(request: RelatedFilmRequest) -> RelatedFilmResponse
+* 'Эндпоинт': /api/v2.2/films/{id}/similars
+* 'Метод': send_related_film_request(request: RelatedFilmRequest) -> RelatedFilmResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.related_film_request import RelatedFilmRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = RelatedFilmRequest(507)
 response = api_client.films.send_related_film_request(request)
-```
+'''
 
 ### Получить список цифровых релизов
 
 Возвращает список цифровых релизов. Например: https://www.kinopoisk.ru/comingsoon/digital/
 
-* `Эндпоинт`: /api/v2.1/films/releases
-* `Метод`: send_digital_release_request(request: DigitalReleaseRequest) -> DigitalReleaseResponse
+* 'Эндпоинт': /api/v2.1/films/releases
+* 'Метод': send_digital_release_request(request: DigitalReleaseRequest) -> DigitalReleaseResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.digital_release_request import DigitalReleaseRequest
 from kinopoisk_unofficial.model.dictonary.month import Month
@@ -291,16 +291,16 @@ from kinopoisk_unofficial.model.dictonary.month import Month
 api_client = KinopoiskApiClient("<your_token>")
 request = DigitalReleaseRequest(2021, Month.SEPTEMBER)
 response = api_client.films.send_digital_release_request(request)
-```
+'''
 
 ### Получить график кинопремьер
 
 Возвращает список кинопремьер. Например: https://www.kinopoisk.ru/premiere/
 
-* `Эндпоинт`: /api/v2.2/films/premieres
-* `Метод`: send_premiere_request(request: PremiereRequest) -> PremiereResponse
+* 'Эндпоинт': /api/v2.2/films/premieres
+* 'Метод': send_premiere_request(request: PremiereRequest) -> PremiereResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.model.dictonary.month import Month
 from kinopoisk_unofficial.request.films.premiere_request import PremiereRequest
@@ -309,7 +309,7 @@ api_client = KinopoiskApiClient('<your_token>')
 
 request = PremiereRequest(2021, Month.DECEMBER)
 response = api_client.films.send_premiere_request(request)
-```
+'''
 
 ## reviews
 
@@ -318,35 +318,35 @@ response = api_client.films.send_premiere_request(request)
 ### Получить рецензии зрителей
 
 Возвращает список рецензий с пагинацией. Каждая страница содержит не более чем 20 рецензий. Поле description содержит не
-полный текст рецензии. Полный текст может быть получен из `ReviewDetailsRequest`
+полный текст рецензии. Полный текст может быть получен из 'ReviewDetailsRequest'
 
-* `Эндпоинт`: /api/v1/reviews
-* `Метод`: send_reviews_request(request: ReviewsRequest) -> ReviewsResponse
+* 'Эндпоинт': /api/v1/reviews
+* 'Метод': send_reviews_request(request: ReviewsRequest) -> ReviewsResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.reviews.reviews_request import ReviewsRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = ReviewsRequest(507)
 response = api_client.reviews.send_reviews_request(request)
-```
+'''
 
 ### Получить полную рецензию по kinopoisk review id
 
 Возвращает полную информацию о рецензии.
 
-* `Эндпоинт`: /api/v1/reviews/details
-* `Метод`: send_review_details_request(request: ReviewDetailsRequest) -> ReviewDetailsResponse
+* 'Эндпоинт': /api/v1/reviews/details
+* 'Метод': send_review_details_request(request: ReviewDetailsRequest) -> ReviewDetailsResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.reviews.review_details_request import ReviewDetailsRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = ReviewDetailsRequest(3000574)
 response = api_client.reviews.send_review_details_request(request)
-```
+'''
 
 ## staff
 
@@ -356,33 +356,33 @@ response = api_client.reviews.send_review_details_request(request)
 
 Возвращает данные об актерах, режиссерах и т.д. по kinopoisk film id
 
-* `Эндпоинт`: /api/v1/staff
-* `Метод`: send_staff_request(request: StaffRequest) -> StaffResponse
+* 'Эндпоинт': /api/v1/staff
+* 'Метод': send_staff_request(request: StaffRequest) -> StaffResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.staff.staff_request import StaffRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = StaffRequest(507)
 response = api_client.staff.send_staff_request(request)
-```
+'''
 
 ### Получить данные о конкретном человеке по kinopoisk person id
 
 Возвращает данные о конкретном человеке по kinopoisk person id
 
-* `Эндпоинт`: /api/v1/staff/{id}
-* `Метод`: send_person_request(request: PersonRequest) -> PersonResponse
+* 'Эндпоинт': /api/v1/staff/{id}
+* 'Метод': send_person_request(request: PersonRequest) -> PersonResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.staff.person_request import PersonRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = PersonRequest(27977)
 response = api_client.staff.send_person_request(request)
-```
+'''
 
 ## persons
 
@@ -392,14 +392,14 @@ response = api_client.staff.send_person_request(request)
 
 Одна страница может содержать до 50 элементов в items
 
-* `Эндпоинт`: /api/v1/persons
-* `Метод`: send_person_by_name_request(request: PersonByNameRequest) -> PersonByNameResponse
+* 'Эндпоинт': /api/v1/persons
+* 'Метод': send_person_by_name_request(request: PersonByNameRequest) -> PersonByNameResponse
 
-```python
+'''python
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.persons.person_by_name_request import PersonByNameRequest
 
 api_client = KinopoiskApiClient("<your_token>")
 request = PersonByNameRequest("Джеймс Кэмерон")
 response = api_client.persons.send_person_by_name_request(request)
-```
+'''

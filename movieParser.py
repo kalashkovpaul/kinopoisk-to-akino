@@ -1,8 +1,5 @@
-from urllib import response
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
-from kinopoisk_unofficial.model.box_office import BoxOffice
 from kinopoisk_unofficial.request.films.box_office_request import BoxOfficeRequest
-from kinopoisk_unofficial.request.films.distributions_request import DistributionsRequest
 from kinopoisk_unofficial.request.films.film_request import FilmRequest
 import requests
 import os
@@ -11,6 +8,7 @@ from pathlib import Path
 from PIL import Image
 
 from kinopoisk_unofficial.request.films.film_video_request import FilmVideoRequest
+from kinopoisk_unofficial.request.staff.person_request import PersonRequest
 from kinopoisk_unofficial.request.staff.staff_request import StaffRequest
 
 api_client = KinopoiskApiClient("b4aadb6a-b881-46ce-bacd-a25b8b5697e8")
@@ -18,6 +16,7 @@ api_client = KinopoiskApiClient("b4aadb6a-b881-46ce-bacd-a25b8b5697e8")
 class MovieInfo:
     def __init__(self):
         self.isEmpty = True
+        self.id = 0
         self.poster = ""
         self.posterpreview = ""
         self.title = ""
@@ -35,19 +34,20 @@ class MovieInfo:
         self.gross = ""
         self.duration = ""
     
-    def getInfo(self, kinopoiskID, ID):
-        self.getKinoPoiskMovieInfo(kinopoiskID, ID)
+    def getInfo(self, kinopoiskID, ID, actorsIDs):
+        self.getMainInfo(kinopoiskID, ID)
         self.getTrailer(kinopoiskID)
-        self.getDirector(kinopoiskID)
+        self.getStaff(kinopoiskID, actorsIDs)
         self.getBudgetAndGross(kinopoiskID)
 
-    def getKinoPoiskMovieInfo(self, kinopoiskID, ID):
+    def getMainInfo(self, kinopoiskID, ID):
         request = FilmRequest(kinopoiskID)
         try:
             response = api_client.films.send_film_request(request)
         except Exception as e:
             self.isEmpty = True
             return
+        self.id = ID
         self.poster = str(ID) + ".webp"
         saveImage(response.film.poster_url, self.poster)
         self.posterpreview = str(ID) + "_preview.webp"
@@ -59,7 +59,7 @@ class MovieInfo:
         self.info = str(response.film.year) + ", " + \
             response.film.countries[0].country + ", " + \
             response.film.genres[0].genre
-        self.description = response.film.description
+        self.description = response.film.description.replace("'", "`")
         self.releaseyear = str(response.film.year)
         self.country = response.film.countries[0].country
         for country in response.film.countries[1 : ]:
@@ -82,21 +82,23 @@ class MovieInfo:
                 return
         self.trailer = "https://www.youtube.com/"
 
-    def getDirector(self, kinopoiskID):
+    def getStaff(self, kinopoiskID, actorsIDs):
         request = StaffRequest(kinopoiskID)
         try:
             response = api_client.staff.send_staff_request(request)
         except Exception as e:
             self.isEmpty = True
             return
+        actorsAmount = 0
         for item in response.items:
             if item.profession_key.value == "DIRECTOR":
                 self.director = item.name_ru
                 self.isEmpty = False
-                return
+            elif actorsAmount < 30 and item.profession_key.value == "ACTOR":
+                if not item.staff_id in actorsIDs:
+                    actorsIDs[item.staff_id] = len(actorsIDs)
+                    actorsAmount += 1
         
-        self.director = ""
-        self.isEmpty = True
 
     def getBudgetAndGross(self, kinopoiskID):
         request = BoxOfficeRequest(kinopoiskID)
@@ -117,24 +119,28 @@ class MovieInfo:
         else:
             self.isEmpty = False
     
-    def writeToFile(self, file):
-        file.write("\t(\n")
-        file.write("\t\t\'{}\',\n".format(self.poster))
-        file.write("\t\t\'{}\',\n".format(self.title))
-        file.write("\t\t\'{}\',\n".format(self.titleoriginal))
-        file.write("\t\t{},\n".format(self.rating))
-        file.write("\t\t{},\n".format(self.votesum))
-        file.write("\t\t\'{}\',\n".format(self.info))
-        file.write("\t\t\'{}\',\n".format(self.description))
-        file.write("\t\t\'{}\',\n".format(self.trailer))
-        file.write("\t\t\'{}\',\n".format(self.releaseyear))
-        file.write("\t\t\'{}\',\n".format(self.country))
-        file.write("\t\t\'{}\',\n".format(self.motto))
-        file.write("\t\t\'{}\',\n".format(self.director))
-        file.write("\t\t\'{}\',\n".format(self.budget))
-        file.write("\t\t\'{}\',\n".format(self.gross))
-        file.write("\t\t\'{}\',\n".format(self.duration))
-        file.write("\t),\n")
+    def writeToFile(self, file, last=False):
+        file.write("    (\n")
+        file.write("        {},\n".format(self.id))
+        file.write("        '{}',\n".format(self.poster.replace("'", "`")))
+        file.write("        '{}',\n".format(self.title.replace("'", "`")))
+        file.write("        '{}',\n".format(self.titleoriginal.replace("'", "`")))
+        file.write("        {},\n".format(self.rating))
+        file.write("        {},\n".format(self.votesum))
+        file.write("        '{}',\n".format(self.info.replace("'", "`")))
+        file.write("        '{}',\n".format(self.description.replace("'", "`")))
+        file.write("        '{}',\n".format(self.trailer))
+        file.write("        '{}',\n".format(self.releaseyear))
+        file.write("        '{}',\n".format(self.country.replace("'", "`")))
+        file.write("        '{}',\n".format(self.motto.replace("'", "`")))
+        file.write("        '{}',\n".format(self.director.replace("'", "`")))
+        file.write("        '{}',\n".format(self.budget))
+        file.write("        '{}',\n".format(self.gross))
+        file.write("        '{}'\n".format(self.duration))
+        if last:
+            file.write("    );\n")
+        else:
+            file.write("    ),\n")
 
 def convertToWebp(name, oldName):
     destSource = Path('./webp/{name}'.format(name=name))
@@ -163,17 +169,51 @@ def cleanImages():
     for f in files:
         os.remove(f)
 
-id = 1
-cleanImages()
-moviesFile = open("movies_init.sql", "w")
-for kinopoiskId in range(300, 500):
-    movieInfo = MovieInfo()
-    movieInfo.getInfo(kinopoiskId, id)
-    if not movieInfo.isEmpty:
-        print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
-        movieInfo.writeToFile(moviesFile)
-        id += 1
-    else:
-        print("[ EMPTY ]")
-moviesFile.close()
+def writeMoviesHeader(file):
+    file.write("INSERT INTO\n")
+    file.write("    movies (\n")
+    file.write("        id,\n")
+    file.write("        poster,\n")
+    file.write("        title,\n")
+    file.write("        titleoriginal,\n")
+    file.write("        rating,\n")
+    file.write("        votesnum,\n")
+    file.write("        info,\n")
+    file.write("        description,\n")
+    file.write("        trailer,\n")
+    file.write("        releaseyear,\n")
+    file.write("        country,\n")
+    file.write("        motto,\n")
+    file.write("        director,\n")
+    file.write("        budget,\n")
+    file.write("        gross,\n")
+    file.write("        duration\n")
+    file.write("    )\n")
+    file.write("VALUES\n")
+
+def getMovies():
+    print("[ LOG ]: Downloadinig movies...")
+    id = 1
+    moviesIDs = {}
+    actorsIDs = {}
+    cleanImages()
+    moviesFile = open("movies_init.sql", "w")
+    writeMoviesHeader(moviesFile)
+    for kinopoiskId in range(300, 310):
+        movieInfo = MovieInfo()
+        movieInfo.getInfo(kinopoiskId, id, actorsIDs)
+        if not movieInfo.isEmpty:
+            print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
+            if kinopoiskId == 302:
+                movieInfo.writeToFile(moviesFile, True)
+            else:
+                movieInfo.writeToFile(moviesFile)
+            moviesIDs[kinopoiskId] = id
+            id += 1
+        else:
+            print("[ EMPTY ]")
+    moviesFile.close()
+    print("[ LOG ]: Movies downloaded!")
+    return moviesIDs, actorsIDs
+
 
