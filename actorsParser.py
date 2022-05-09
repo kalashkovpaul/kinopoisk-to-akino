@@ -83,10 +83,10 @@ def getActors(actorsIDs):
         actorInfo.getInfo(kinopoiskId, actorsIDs[kinopoiskId], newActorsIDs)
         if not actorInfo.isEmpty:
             print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", actorsIDs[kinopoiskId])
-            if i == len(actorsIDs) - 1:
-                actorInfo.writeToFile(moviesFile, True)
-            else:
-                actorInfo.writeToFile(moviesFile)
+            # if i == len(actorsIDs) - 1:
+            #     actorInfo.writeToFile(moviesFile, True)
+            # else:
+            actorInfo.writeToFile(moviesFile)
         else:
             print("[ EMPTY ]: KinoPoiskID = ", kinopoiskId)
         i += 1

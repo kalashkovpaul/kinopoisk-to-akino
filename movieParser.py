@@ -199,21 +199,37 @@ def getMovies():
     cleanImages()
     moviesFile = open("movies_init.sql", "w")
     writeMoviesHeader(moviesFile)
-    for kinopoiskId in range(300, 310):
+    for kinopoiskId in range(300, 303):
         movieInfo = MovieInfo()
         movieInfo.getInfo(kinopoiskId, id, actorsIDs)
         if not movieInfo.isEmpty:
             print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
-            if kinopoiskId == 309:
-                movieInfo.writeToFile(moviesFile, True)
-            else:
-                movieInfo.writeToFile(moviesFile)
             moviesIDs[kinopoiskId] = id
             id += 1
+            # if kinopoiskId == 309:
+            #     movieInfo.writeToFile(moviesFile, True)
+            # else:
+            movieInfo.writeToFile(moviesFile)
         else:
             print("[ EMPTY ]")
+    
     moviesFile.close()
     print("[ LOG ]: Movies downloaded!")
+    return moviesIDs, actorsIDs
+
+def getSingleMovie(kinopoiskId, id, moviesIDs, actorsIDs):
+    print("[ LOG ]: Downloadinig single movie...")
+    moviesFile = open("movies_init.sql", "a")
+    movieInfo = MovieInfo()
+    movieInfo.getInfo(kinopoiskId, id, actorsIDs)
+    if not movieInfo.isEmpty:
+        print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
+        movieInfo.writeToFile(moviesFile)
+        moviesIDs[kinopoiskId] = id
+    else:
+        print("[ EMPTY ]")
+    moviesFile.close()
+    print("[ LOG ]: Single movie downloaded!")
     return moviesIDs, actorsIDs
 
 
