@@ -119,21 +119,35 @@ class MovieInfo:
         else:
             self.isEmpty = False
     
+    def processFields(self):
+        try:
+            self.poster = self.poster.replace("'", "`")
+            self.title = self.title.replace("'", "`")
+            self.titleoriginal = self.titleoriginal.replace("'", "`")
+            self.info = self.info.replace("'", "`")
+            self.description = self.description.replace("'", "`")
+            self.country = self.country.replace("'", "`")
+            self.motto = self.motto.replace("'", "`")
+            self.director = self.director.replace("'", "`")
+
+        except Exception as e:
+            print(str(e))
     def writeToFile(self, file, last=False):
+        self.processFields()
         file.write("    (\n")
         file.write("        {},\n".format(self.id))
-        file.write("        '{}',\n".format(self.poster.replace("'", "`")))
-        file.write("        '{}',\n".format(self.title.replace("'", "`")))
-        file.write("        '{}',\n".format(self.titleoriginal.replace("'", "`")))
+        file.write("        '{}',\n".format(self.poster))
+        file.write("        '{}',\n".format(self.title))
+        file.write("        '{}',\n".format(self.titleoriginal))
         file.write("        {},\n".format(self.rating))
         file.write("        {},\n".format(self.votesum))
-        file.write("        '{}',\n".format(self.info.replace("'", "`")))
-        file.write("        '{}',\n".format(self.description.replace("'", "`")))
+        file.write("        '{}',\n".format(self.info))
+        file.write("        '{}',\n".format(self.description))
         file.write("        '{}',\n".format(self.trailer))
         file.write("        '{}',\n".format(self.releaseyear))
-        file.write("        '{}',\n".format(self.country.replace("'", "`")))
-        file.write("        '{}',\n".format(self.motto.replace("'", "`")))
-        file.write("        '{}',\n".format(self.director.replace("'", "`")))
+        file.write("        '{}',\n".format(self.country))
+        file.write("        '{}',\n".format(self.motto))
+        file.write("        '{}',\n".format(self.director))
         file.write("        '{}',\n".format(self.budget))
         file.write("        '{}',\n".format(self.gross))
         file.write("        '{}'\n".format(self.duration))
@@ -199,16 +213,13 @@ def getMovies():
     cleanImages()
     moviesFile = open("movies_init.sql", "w")
     writeMoviesHeader(moviesFile)
-    for kinopoiskId in range(300, 310):
+    for kinopoiskId in range(300, 600):
         movieInfo = MovieInfo()
         movieInfo.getInfo(kinopoiskId, id, actorsIDs)
         if not movieInfo.isEmpty:
             print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
             moviesIDs[kinopoiskId] = id
             id += 1
-            # if kinopoiskId == 309:
-            #     movieInfo.writeToFile(moviesFile, True)
-            # else:
             movieInfo.writeToFile(moviesFile)
         else:
             print("[ EMPTY ]")
