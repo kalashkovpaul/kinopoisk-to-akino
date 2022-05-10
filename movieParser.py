@@ -160,7 +160,10 @@ def convertToWebp(name, oldName):
     destSource = Path('./webp/{name}'.format(name=name))
     destination = destSource.with_suffix(".webp")
     image = Image.open(Path('./img/{}'.format(oldName)))
-    image.save(destination, format="webp")
+    if not os.path.exists("./webp/{}".format(name)):
+        image.save(destination, format="webp")
+    else:
+        print("[ ERROR ]: We were trying to OVERWRITE IT!")
     return destination
 
 def saveImage(imageUrl, name):
