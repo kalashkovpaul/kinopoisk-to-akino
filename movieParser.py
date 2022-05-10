@@ -199,7 +199,7 @@ def getMovies():
     cleanImages()
     moviesFile = open("movies_init.sql", "w")
     writeMoviesHeader(moviesFile)
-    for kinopoiskId in range(300, 303):
+    for kinopoiskId in range(300, 310):
         movieInfo = MovieInfo()
         movieInfo.getInfo(kinopoiskId, id, actorsIDs)
         if not movieInfo.isEmpty:
