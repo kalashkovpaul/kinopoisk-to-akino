@@ -1,40 +1,21 @@
+CREATE TABLE movies_genres (
+    movie_id                            BIGINT REFERENCES movies (id),
+    genre                               VARCHAR(50) REFERENCES genres (genre),
+    CONSTRAINT movies_genres_id         PRIMARY KEY (movie_id, genre)
+);
+
 INSERT INTO
-    movies (
-        poster,
-        title,
-        titleoriginal,
-        rating,
-        votesnum,
-        info,
-        description,
-        trailer,
-        releaseyear,
-        country,
-        motto,
-        director,
-        budget,
-        gross,
-        duration
-    )
+    movies_genres (movie_id, genre)
 VALUES
-    (
-        '1.webp',
-        'Лиззи Магуайр',
-        'The Lizzie McGuire Movie',
-        6.3,
-        10189,
-        '2003, США, мелодрама',
-        'Тринадцатилетняя школьница Лиззи Магуайер и ее приятели Гордо, Кейт и Эсан собираются оттянуться по полной программе во время их поездки с классом в Италию.
-
-Но там случается весьма неожиданное происшествие: девочку ошибочно принимают за итальянскую поп-звезду Изабеллу, да к тому же девушка влюбляется в бывшего дружка Изабеллы Паоло. Когда родители Лизи обо всем узнают, они вместе с ее братом Мэттом срочно вылетают в Италию.
-
-Но Лиззи уже не та закомплексованная девочка-подросток, кем была раньше, она до такой степени вжилась в роль певицы, что и на самом деле стала самой настоящей звездой.',
-        'https://www.youtube.com/',
-        '2003',
-        'США',
-        'Lizze McGuire goes to Rome.',
-        'Джим Фолл',
-        '17000000 $',
-        '55534455 $',
-        '94 мин.'
-    );
+    (1000001, 'anime'),
+    (1000001, 'action'),
+    (1000002, 'anime'),
+    (1000002, 'drama'),
+    (1000002, 'horror'),
+    (1000002, 'thriller'),
+    (1000003, 'comedy'),
+    (1000004, 'action'),
+    (1000004, 'thriller'),
+    (1000005, 'anime'),
+    (1000005, 'fantasy'),
+    (1000005, 'horror');
