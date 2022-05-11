@@ -48,22 +48,29 @@ class MovieInfo:
             self.isEmpty = True
             return
         self.id = ID
-        self.poster = str(ID) + ".webp"
-        saveImage(response.film.poster_url, self.poster)
-        self.posterpreview = str(ID) + "_preview.webp"
-        saveImage(response.film.poster_url_preview, self.posterpreview)
+        if (response.film.poster_url):
+            self.poster = str(ID) + ".webp"
+            saveImage(response.film.poster_url, self.poster)
+            self.posterpreview = str(ID) + "_preview.webp"
+            saveImage(response.film.poster_url_preview, self.posterpreview)
         self.title = response.film.name_ru
         self.titleoriginal = response.film.name_original
         self.rating = response.film.rating_kinopoisk
         self.votesum = response.film.rating_kinopoisk_vote_count
-        self.info = str(response.film.year) + ", " + \
-            response.film.countries[0].country + ", " + \
-            response.film.genres[0].genre
-        self.description = response.film.description.replace("'", "`")
+        if len(response.film.countries) and len(response.film.genres):
+            self.info = str(response.film.year) + ", " + \
+                response.film.countries[0].country + ", " + \
+                response.film.genres[0].genre
+        else:
+            self.info = str(response.film.year)
+        self.description = response.film.description
         self.releaseyear = str(response.film.year)
-        self.country = response.film.countries[0].country
-        for country in response.film.countries[1 : ]:
-            self.country += (", " + country.country)
+        if len(response.film.countries):
+            self.country = response.film.countries[0].country
+            for country in response.film.countries[1 : ]:
+                self.country += (", " + country.country)
+        else:
+            self.country = "Unknown"
         self.motto = response.film.slogan
         self.duration = str(response.film.film_length) + " мин."
         self.isEmpty = False
@@ -216,7 +223,7 @@ def getMovies():
     cleanImages()
     moviesFile = open("movies_init.sql", "w")
     writeMoviesHeader(moviesFile)
-    for kinopoiskId in range(300, 600):
+    for kinopoiskId in range(1, 179598): # 2823 6100
         movieInfo = MovieInfo()
         movieInfo.getInfo(kinopoiskId, id, actorsIDs)
         if not movieInfo.isEmpty:
