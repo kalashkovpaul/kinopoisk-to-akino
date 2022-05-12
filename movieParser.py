@@ -1,6 +1,10 @@
+import re
 from kinopoisk_unofficial.kinopoisk_api_client import KinopoiskApiClient
 from kinopoisk_unofficial.request.films.box_office_request import BoxOfficeRequest
 from kinopoisk_unofficial.request.films.film_request import FilmRequest
+from kinopoisk_unofficial.request.films.film_top_request import FilmTopRequest
+from kinopoisk_unofficial.request.films.related_film_request import RelatedFilmRequest
+
 import requests
 import os
 import glob
@@ -121,18 +125,21 @@ class MovieInfo:
             elif item.type == "WORLD":
                 self.gross = str(item.amount) + " " + item.symbol
 
-        if not self.budget or not self.gross:
-            self.isEmpty = True
-        else:
-            self.isEmpty = False
+        if not self.budget:
+            self.budget = "? $"
+        if not self.gross:
+            self.gross = "? $"
     
     def processFields(self):
         try:
+            if not self.rating:
+                self.rating = 0
             self.poster = self.poster.replace("'", "`")
             self.title = self.title.replace("'", "`")
             self.titleoriginal = self.titleoriginal.replace("'", "`")
             self.info = self.info.replace("'", "`")
             self.description = self.description.replace("'", "`")
+            self.description = self.description.replace("\r\n", " ")
             self.country = self.country.replace("'", "`")
             self.motto = self.motto.replace("'", "`")
             self.director = self.director.replace("'", "`")
@@ -215,25 +222,53 @@ def writeMoviesHeader(file):
     file.write("    )\n")
     file.write("VALUES\n")
 
+def fileToDict(file):
+    newDict = {}
+    for line in file:
+        kinopoiskID, ourID = map(int, line.split())
+        newDict[kinopoiskID] = ourID
+    return newDict
+
+def getMoviesIDs():
+    IDs = []
+    for i in range(1, 14):
+        request = FilmTopRequest(page=i)
+        try:
+            response = api_client.films.send_film_top_request(request)
+        except Exception as e:
+            print(e)
+            return []
+        for movie in response.films:
+            if movie.film_id not in IDs:
+                IDs.append(movie.film_id)
+    oldIDs = IDs.copy()
+    for kinopoiskId in oldIDs:
+        request = RelatedFilmRequest(kinopoiskId)
+        try:
+            response = api_client.films.send_related_film_request(request)
+        except Exception as e:
+            print(e)
+            return []
+        for movie in response.items:
+            if movie.film_id not in IDs:
+                IDs.append(movie.film_id)
+    return IDs
+
 def getMovies():
-    print("[ LOG ]: Downloadinig movies...")
-    id = 1
-    moviesIDs = {}
-    actorsIDs = {}
     cleanImages()
+    print("[ LOG ]: Downloadinig movies...")
+    moviesIDs = getMoviesIDs()
+    actorsIDs = {}
     moviesFile = open("movies_init.sql", "w")
     writeMoviesHeader(moviesFile)
-    for kinopoiskId in range(1, 179598): # 2823 6100
+    for kinopoiskId in moviesIDs: # 2823 6100
         movieInfo = MovieInfo()
-        movieInfo.getInfo(kinopoiskId, id, actorsIDs)
+        movieInfo.getInfo(kinopoiskId, kinopoiskId, actorsIDs)
         if not movieInfo.isEmpty:
-            print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", id)
-            moviesIDs[kinopoiskId] = id
-            id += 1
+            print("[ DOWLOADED ]: KinoPoiskID =", kinopoiskId, ", ourID =", kinopoiskId, ", movie =", movieInfo.title)
             movieInfo.writeToFile(moviesFile)
         else:
             print("[ EMPTY ]")
-    
     moviesFile.close()
     print("[ LOG ]: Movies downloaded!")
     return moviesIDs, actorsIDs

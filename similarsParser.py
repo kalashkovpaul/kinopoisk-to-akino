@@ -11,7 +11,7 @@ def writeSimilarsHeader(file):
 
 
 def getSimilars(moviesIDs, actorsIDs):
-    oldMoviesIDs = dict(moviesIDs)
+    oldMoviesIDs = moviesIDs.copy()
     print("[ LOG ]: Downloading similars...")
     similarsFile = open("similars_init.sql", "w")
     writeSimilarsHeader(similarsFile)
@@ -26,14 +26,14 @@ def getSimilars(moviesIDs, actorsIDs):
             if i >= 3:
                 break
             if item.film_id in moviesIDs:
-                similarsFile.write("    ({},    {}),\n".format(moviesIDs[kinopoiskId], moviesIDs[item.film_id]))
+                similarsFile.write("    ({},    {}),\n".format(kinopoiskId, item.film_id))
                 i += 1
             else:
-                print("[ LOG ]: Related not found, downloading: ", item.film_id)
-                moviesIDs, actorsIDs = getSingleMovie(item.film_id, len(moviesIDs) + 1, moviesIDs, actorsIDs)
-                if item.film_id in moviesIDs:
-                    similarsFile.write("    ({},    {}),\n".format(moviesIDs[kinopoiskId], moviesIDs[item.film_id]))
-                    i += 1
+                print("[ LOG ]: Related not found: ", item.film_id)
+                # moviesIDs, actorsIDs = getSingleMovie(item.film_id, len(moviesIDs) + 1, moviesIDs, actorsIDs)
+                # if item.film_id in moviesIDs:
+                #     similarsFile.write("    ({},    {}),\n".format(moviesIDs[kinopoiskId], moviesIDs[item.film_id]))
+                #     i += 1
 
     similarsFile.close()
     print("[ LOG ]: Similars downloaded!")

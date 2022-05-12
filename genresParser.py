@@ -46,7 +46,7 @@ def getGenres(moviesIDs):
             pass
         for item in response.film.genres:
             if item.genre in genresTable:
-                genresFile.write("    ({},    {}),\n".format(moviesIDs[kinopoiskId], genresTable[item.genre]))
+                genresFile.write("    ({},    {}),\n".format(kinopoiskId, genresTable[item.genre]))
     genresFile.close()
     print("[ LOG ]: Genres downloaded!")
 

@@ -25,9 +25,9 @@ def getMoviesToActors(moviesIDs, actorsIDs):
             if item.profession_key.name == "ACTOR" \
                 and item.staff_id in actorsIDs:
                 if i == len(moviesIDs) - 1 and j == len(response.items) - 1:
-                    movieToActorsFile.write("    ({}, {});\n".format(moviesIDs[kinopoiskId], actorsIDs[item.staff_id]))
+                    movieToActorsFile.write("    ({}, {});\n".format(kinopoiskId, actorsIDs[item.staff_id]))
                 else:
-                    movieToActorsFile.write("    ({}, {}),\n".format(moviesIDs[kinopoiskId], actorsIDs[item.staff_id]))
+                    movieToActorsFile.write("    ({}, {}),\n".format(kinopoiskId, actorsIDs[item.staff_id]))
             j += 1
         i += 1
     movieToActorsFile.close()
