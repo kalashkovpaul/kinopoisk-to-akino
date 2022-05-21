@@ -243,10 +243,12 @@ def getMoviesIDs():
             if movie.film_id not in IDs:
                 IDs.append(movie.film_id)
     print("[ LOG ]: ID base done")
-    for i in range(10):
+    filmsToCheck = IDs.copy()
+    i = 0
+    while i < 10:
+        newFilmsToCheck = []
         print("[ LOG ]: ID level = {}".format(i))
-        oldIDs = IDs.copy()
-        for kinopoiskId in oldIDs:
+        for kinopoiskId in filmsToCheck:
             request = RelatedFilmRequest(kinopoiskId)
             try:
                 response = api_client.films.send_related_film_request(request)
@@ -256,6 +258,9 @@ def getMoviesIDs():
             for movie in response.items:
                 if movie.film_id not in IDs:
                     IDs.append(movie.film_id)
+                    newFilmsToCheck.append(movie.film_id)
+        filmsToCheck = newFilmsToCheck.copy()
+        i += 1
     print("[ LOG ]: ID end!")
     print("Total ID amount = {}".format(len(IDs)))
     return IDs
