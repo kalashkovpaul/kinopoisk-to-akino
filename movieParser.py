@@ -259,6 +259,7 @@ def getMoviesIDs():
                 if movie.film_id not in IDs:
                     IDs.append(movie.film_id)
                     newFilmsToCheck.append(movie.film_id)
+                    print("[ LOG ]: Movies amount = {}".format(len(IDs)))
         filmsToCheck = newFilmsToCheck.copy()
         i += 1
     print("[ LOG ]: ID end!")
