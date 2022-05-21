@@ -230,6 +230,7 @@ def fileToDict(file):
     return newDict
 
 def getMoviesIDs():
+    print("[ LOG ]: ID start")
     IDs = []
     for i in range(1, 14):
         request = FilmTopRequest(page=i)
@@ -241,17 +242,22 @@ def getMoviesIDs():
         for movie in response.films:
             if movie.film_id not in IDs:
                 IDs.append(movie.film_id)
-    oldIDs = IDs.copy()
-    for kinopoiskId in oldIDs:
-        request = RelatedFilmRequest(kinopoiskId)
-        try:
-            response = api_client.films.send_related_film_request(request)
-        except Exception as e:
-            print(e)
-            return []
-        for movie in response.items:
-            if movie.film_id not in IDs:
-                IDs.append(movie.film_id)
+    print("[ LOG ]: ID base done")
+    for i in range(10):
+        print("[ LOG ]: ID level = {}".format(i))
+        oldIDs = IDs.copy()
+        for kinopoiskId in oldIDs:
+            request = RelatedFilmRequest(kinopoiskId)
+            try:
+                response = api_client.films.send_related_film_request(request)
+            except Exception as e:
+                print(e)
+                return []
+            for movie in response.items:
+                if movie.film_id not in IDs:
+                    IDs.append(movie.film_id)
+    print("[ LOG ]: ID end!")
+    print("Total ID amount = {}".format(len(IDs)))
     return IDs
 
 def getMovies():
